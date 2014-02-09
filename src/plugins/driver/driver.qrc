@@ -1,0 +1,35 @@
+<RCC>
+    <qresource prefix="/driver">
+        <file>images/ArrowDown_16.png</file>
+        <file>images/ArrowUp_16.png</file>
+        <file>images/Run.png</file>
+        <file>images/Run_16.png</file>
+        <file>images/DebuggerStart.png</file>
+        <file>images/DebuggerStart_16.png</file>
+        <file>images/Stop.png</file>
+        <file>images/Stop_16.png</file>
+        <file>images/Ok.png</file>
+        <file>images/Ok_16.png</file>
+        <file>images/Cancel.png</file>
+        <file>images/Cancel_16.png</file>
+        <file>images/Refresh.png</file>
+        <file>images/Refresh_16.png</file>
+        <file>images/Save_16.png</file>
+        <file>images/SaveAs_16.png</file>
+        <file>images/Find_16.png</file>
+        <file>images/Delete_16.png</file>
+        <file>images/Properties_16.png</file>
+        <file>images/Rename_16.png</file>
+        <file>images/Script.png</file>
+        <file>images/Script_16.png</file>
+        <file>images/TableMap2D.png</file>
+        <file>images/TableMap3D.png</file>
+        <file>images/Question_16.png</file>
+        <file>images/Edit_16.png</file>
+        <file>images/OpenFile_16.png</file>
+        <file>images/CloseFile_16.png</file>
+        <file>images/NewFile_16.png</file>
+        <file>images/Add.png</file>
+        <file>images/Add_16.png</file>
+    </qresource>
+</RCC>

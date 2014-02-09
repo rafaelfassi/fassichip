@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/graphiceditor">
+        <file>images/Arq2.png</file>
+        <file>images/Arq3.png</file>
+        <file>images/Arq4.png</file>
+        <file>images/Bits8.png</file>
+        <file>images/Bits16.png</file>
+        <file>images/Bits32.png</file>
+        <file>images/BitsF.png</file>
+        <file>images/Chart3d.png</file>
+        <file>images/Cursor.png</file>
+        <file>images/GraphicEditor.png</file>
+        <file>images/Hand.png</file>
+        <file>images/Signal.png</file>
+        <file>images/Swap.png</file>
+        <file>images/ZoomArea.png</file>
+        <file>images/ZoomReset.png</file>
+    </qresource>
+</RCC>

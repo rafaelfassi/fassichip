@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/Arq0.png</file>
+        <file>images/Arq1.png</file>
+        <file>images/Chip1.png</file>
+        <file>images/Arq2.png</file>
+        <file>images/Arq3.png</file>
+        <file>images/Arq4.png</file>
+        <file>images/Splash.png</file>
+        <file>images/Redo.png</file>
+        <file>images/Undo.png</file>
+        <file>images/Ok_16.png</file>
+        <file>images/Warning_16.png</file>
+        <file>images/OpenFile.png</file>
+        <file>images/Configure_16.png</file>
+        <file>images/Save.png</file>
+        <file>images/NewFile_16.png</file>
+        <file>images/CloseFile_16.png</file>
+        <file>images/Exit_16.png</file>
+        <file>images/About_16.png</file>
+        <file>images/Help_16.png</file>
+        <file>images/Plugins_16.png</file>
+        <file>images/Qt.png</file>
+    </qresource>
+</RCC>

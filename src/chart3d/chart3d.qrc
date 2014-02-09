@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/chart3d">
+        <file>images/Box.png</file>
+        <file>images/Filled.png</file>
+        <file>images/FilledMesh.png</file>
+        <file>images/FloorData.png</file>
+        <file>images/FloorIso.png</file>
+        <file>images/Frame.png</file>
+        <file>images/HiddenLine.png</file>
+        <file>images/NoCoord.png</file>
+        <file>images/NoFloor.png</file>
+        <file>images/NoPlot.png</file>
+        <file>images/Points.png</file>
+        <file>images/WireFrame.png</file>
+    </qresource>
+</RCC>

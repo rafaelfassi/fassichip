@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/hexeditor">
+        <file>images/HexEditor.png</file>
+    </qresource>
+</RCC>
