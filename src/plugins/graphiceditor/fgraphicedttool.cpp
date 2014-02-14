@@ -196,6 +196,9 @@ void FGraphicEdtTool::on_SelectionChanged()
     int _Mult = EdtMultip->text().toInt();
     int _nMode = Data->GetPosByte(1, *DataMode);
 
+    if(_NPos < 1) _NPos = 1;
+    if(_Mult < 1) _Mult = 1;
+
     int _SizeFile = Data->GetSizeFile(Data->GetSerieMain()) - Data->GetPosByte(1, *DataMode);
 
     if(_IniSel > _SizeFile) _IniSel = _SizeFile;
@@ -209,7 +212,7 @@ void FGraphicEdtTool::on_SelectionChanged()
     /*
       Se _IniSel + _NPos ou _NPos*_Mult superar o tamanho do arquivo.
     */
-    if((_IniSel + _NPos*_nMode - _nMode) > _SizeFile) _NPos = (_SizeFile - _IniSel + _nMode)/_nMode;
+    if((_IniSel + _NPos*_nMode - _nMode) > _SizeFile) _NPos = (_SizeFile - _IniSel + _nMode)/_nMode;  
     if((_IniSel + _NPos*_nMode*_Mult - _nMode) > _SizeFile) _Mult = (_SizeFile - _IniSel + _nMode)/(_NPos*_nMode);
 
     int _FinSel = (_IniSel + Data->GetPosByte(_NPos, *DataMode)*_Mult - Data->GetPosByte(1, *DataMode));
@@ -224,6 +227,46 @@ void FGraphicEdtTool::on_SelectionChanged()
     //Data->SetSelectionMult(_Mult);
 
     emit SelectionEdited(_IniSel, _NPos, _Mult);
+}
+
+void FGraphicEdtTool::on_BtnNPosClicked()
+{
+    int inc(1);
+    if(sender() == BtnNPosDec) inc = -1;
+
+    bool ok;
+    int val = EdtNPos->text().toInt(&ok);
+
+    if(ok)
+    {
+        val += inc;
+
+        if(val > 0)
+        {
+            EdtNPos->setText(QString::number(val));
+            on_SelectionChanged();
+        }
+    }
+}
+
+void FGraphicEdtTool::on_BtnMultipClicked()
+{
+    int inc(1);
+    if(sender() == BtnMultipDec) inc = -1;
+
+    bool ok;
+    int val = EdtMultip->text().toInt(&ok);
+
+    if(ok)
+    {
+        val += inc;
+
+        if(val > 0)
+        {
+            EdtMultip->setText(QString::number(val));
+            on_SelectionChanged();
+        }
+    }
 }
 
 void FGraphicEdtTool::UpdateSetings()
@@ -338,9 +381,11 @@ void FGraphicEdtTool::CreateForm()
 
     BtnNPosDec = new QPushButton("-", this);
     BtnNPosDec->setFixedSize(20, 20);
+    BtnNPosDec->setAutoRepeat(true);
 
     BtnNPosInc = new QPushButton("+", this);
     BtnNPosInc->setFixedSize(20, 20);
+    BtnNPosInc->setAutoRepeat(true);
 
     QLabel *LabMultip = new QLabel(tr("Y"), this);
     LabMultip->setFixedSize(15, 20);
@@ -350,9 +395,11 @@ void FGraphicEdtTool::CreateForm()
 
     BtnMultipDec = new QPushButton("-", this);
     BtnMultipDec->setFixedSize(20, 20);
+    BtnMultipDec->setAutoRepeat(true);
 
     BtnMultipInc = new QPushButton("+", this);
     BtnMultipInc->setFixedSize(20, 20);
+    BtnMultipInc->setAutoRepeat(true);
 
     QSpacerItem *SpacerSelection = new QSpacerItem(20, 20, QSizePolicy::Expanding,  QSizePolicy::Fixed);
 
@@ -576,5 +623,10 @@ void FGraphicEdtTool::CreateConnections()
     connect(EdtIniPag, SIGNAL(editingFinished()), this, SLOT(on_PageIniPts_EditingFinished()));
     connect(EdtPtsPag, SIGNAL(editingFinished()), this, SLOT(on_PageIniPts_EditingFinished()));
     connect(EdtFinPag, SIGNAL(editingFinished()), this, SLOT(on_PageFin_EditingFinished()));
+
+    connect(BtnNPosDec, SIGNAL(clicked()), this, SLOT(on_BtnNPosClicked()));
+    connect(BtnNPosInc, SIGNAL(clicked()), this, SLOT(on_BtnNPosClicked()));
+    connect(BtnMultipDec, SIGNAL(clicked()), this, SLOT(on_BtnMultipClicked()));
+    connect(BtnMultipInc, SIGNAL(clicked()), this, SLOT(on_BtnMultipClicked()));
 
 }

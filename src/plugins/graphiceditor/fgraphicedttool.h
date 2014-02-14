@@ -27,6 +27,8 @@ public slots:
     void SetPage(int _PageIni, int _NPoints);
     void on_SpinBoxPointer_EditingFinished();
     void on_SelectionChanged();
+    void on_BtnNPosClicked();
+    void on_BtnMultipClicked();
 
 private slots:
     void on_ScrollBarPtsPag_Change(int);
