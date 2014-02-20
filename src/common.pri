@@ -1,9 +1,13 @@
-SRC_ROOT = ../..
-PRO_ROOT = ../../..
+#SRC_ROOTC = .
+#PRO_ROOTC = ..
 UI_DIR = $$PRO_ROOT/tmp
 MOC_DIR = $$PRO_ROOT/tmp
 OBJECTS_DIR = $$PRO_ROOT/tmp
-DESTDIR = $$PRO_ROOT/bin/plugins
+#DESTDIR = $$PRO_ROOTC/bin/plugins
+
+message($$PRO_ROOT)
+message($$SRC_ROOT)
+
 INCLUDEPATH += $$SRC_ROOT \
     $$SRC_ROOT/data
 DEPENDPATH += $$SRC_ROOT \

@@ -1,4 +1,5 @@
 PRO_ROOT = ../../..
+SRC_ROOT = ../..
 QT *= core \
     gui \
     xml \
@@ -8,7 +9,8 @@ TARGET = k4driver
 TEMPLATE = lib
 CONFIG += plugin \
     uitools
-include(../common.pri)
+DESTDIR = $$PRO_ROOT/bin/plugins
+include(../../common.pri)
 SOURCES += plugdriver.cpp \
     fdriver.cpp \
     fdriverelement.cpp \

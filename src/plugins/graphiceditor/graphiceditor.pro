@@ -1,12 +1,12 @@
-# -------------------------------------------------
-# Project created by QtCreator 2011-08-04T13:00:04
-# -------------------------------------------------
+PRO_ROOT = ../../..
+SRC_ROOT = ../..
 QT *= core \
     gui
 TARGET = c4graphiceditor
 TEMPLATE = lib
 CONFIG += plugin
-include(../common.pri)
+DESTDIR = $$PRO_ROOT/bin/plugins
+include(../../common.pri)
 include(../chart2d.pri)
 include(../chart3d.pri)
 SOURCES += pluggraphiceditor.cpp \
