@@ -9,7 +9,7 @@ OBJECTS_DIR = $$PRO_ROOT/tmp
 DESTDIR = $$PRO_ROOT/bin
 TEMPLATE = app
 
-QMAKE_CXXFLAGS += -fPIC
+#QMAKE_CXXFLAGS += -fPIC
 
 INCLUDEPATH *= src \
     src/data

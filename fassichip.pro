@@ -8,5 +8,6 @@ TRANSLATIONS = languages/fassichip_pt.ts
 TEMPLATE  = subdirs
 CONFIG   += ordered
 
-SUBDIRS += src/app \
+SUBDIRS += src/core \
+    src/app \
     src/plugins

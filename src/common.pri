@@ -1,32 +1,25 @@
-#SRC_ROOTC = .
-#PRO_ROOTC = ..
+LIB_PATH = $$PRO_ROOT/bin/lib
 UI_DIR = $$PRO_ROOT/tmp
 MOC_DIR = $$PRO_ROOT/tmp
 OBJECTS_DIR = $$PRO_ROOT/tmp
-#DESTDIR = $$PRO_ROOTC/bin/plugins
 
-message($$PRO_ROOT)
-message($$SRC_ROOT)
+#message($$PRO_ROOT)
+#message($$SRC_ROOT)
 
 INCLUDEPATH += $$SRC_ROOT \
-    $$SRC_ROOT/data
+    $$SRC_ROOT/core \
+    $$SRC_ROOT/core/data
+
 DEPENDPATH += $$SRC_ROOT \
-    $$SRC_ROOT/data
-SOURCES *= fmaparray.cpp \
-    fdatapackage.cpp \
-    fdatamap3d.cpp \
-    fdataiterator.cpp \
-    fdata.cpp \
-    fwindowtab.cpp \
-    fmainwindow.cpp \
-    misc.cpp
-HEADERS *= version.h \
-    fmaparray.h \
-    fdatapackage.h \
-    fdatamap3d.h \
-    fdataiterator.h \
-    fdata.h \
-    fplugininterface.h \
-    fwindowtab.h \
-    fmainwindow.h \
-    misc.h
+    $$SRC_ROOT/core \
+    $$SRC_ROOT/core/data
+
+HEADERS *= version.h
+
+win32:CONFIG(release, debug|release): LIBS += -L$$LIB_PATH/release/ -lcore
+ else:win32:CONFIG(debug, debug|release): LIBS += -L$$LIB_PATH/debug/ -lcore
+ else:unix: LIBS += -L$$LIB_PATH/ -lcore
+
+win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$LIB_PATH/release/core.lib
+ else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$LIB_PATH/debugcore.lib
+ else:unix:!symbian: PRE_TARGETDEPS += $$LIB_PATH/libcore.a
