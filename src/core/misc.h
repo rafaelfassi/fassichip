@@ -4,7 +4,7 @@
 //#include <QString>
 //#include <QValidator>
 //#include <QMessageBox>
-#include <QtGui>
+#include <QtWidgets>
 #include <math.h>
 
 

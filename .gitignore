@@ -2,6 +2,8 @@
 bin
 tmp
 Makefile
+Makefile.Debug
+Makefile.Release
 qrc_*
 .directory
 

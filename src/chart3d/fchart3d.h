@@ -1,19 +1,11 @@
 #ifndef FCHART3D_H
 #define FCHART3D_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "fdatamap3d.h"
-
-// Se for Linux, instalar os pacotes libqwtplot3d-qt4-0 e libqwtplot3d-qt4-dev pelo repositorio.
-#if defined(Q_OS_LINUX)
-    #include "qwtplot3d/qwt3d_surfaceplot.h"
-    #include "qwtplot3d/qwt3d_parametricsurface.h"
-    #include "qwtplot3d/qwt3d_enrichment.h"
-#else
-    #include "qwt3d_surfaceplot.h"
-    #include "qwt3d_parametricsurface.h"
-    #include "qwt3d_enrichment.h"
-#endif
+#include "qwt3d_surfaceplot.h"
+#include "qwt3d_parametricsurface.h"
+#include "qwt3d_enrichment.h"
 
 using namespace Qwt3D;
 

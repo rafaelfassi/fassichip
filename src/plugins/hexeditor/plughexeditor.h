@@ -12,6 +12,7 @@ class PlugHexEditor : public QObject, public FPluginInterface
 {
     Q_OBJECT
     Q_INTERFACES(FPluginInterface)
+    Q_PLUGIN_METADATA(IID "com.fassi.fassichip.hexeditor" FILE "hexeditor.json")
 
 public:
     QString Name() { return "HexEditor"; }

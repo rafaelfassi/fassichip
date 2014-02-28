@@ -35,4 +35,4 @@ bool PlugDriver::AcceptCloseApp()
     return Driver->CloseDriver();
 }
 
-Q_EXPORT_PLUGIN2(plugdriver, PlugDriver)
+//Q_EXPORT_PLUGIN2(plugdriver, PlugDriver)

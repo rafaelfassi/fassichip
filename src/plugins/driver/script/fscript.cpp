@@ -70,7 +70,7 @@ void FScript::Edit()
     ScriptEditor->SetUiFileName(UiFileName);
     ScriptEditor->SetUiPath(UiPath);
     ScriptEditor->SetScript(Script);
-    ScriptEditor->setShown(true);
+    ScriptEditor->setVisible(true);
 
     connect(ScriptEditor, SIGNAL(ExecuteScript(QString,QString,bool)), this, SLOT(RunScript(QString,QString,bool)));
     connect(ScriptEditor, SIGNAL(AbortEvaluation()), this, SLOT(AbortEvaluation()));

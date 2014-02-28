@@ -1,7 +1,7 @@
 #ifndef FDRIVER_H
 #define FDRIVER_H
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "fxmldriver.h"
 #include "fdata.h"

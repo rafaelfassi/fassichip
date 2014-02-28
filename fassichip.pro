@@ -1,6 +1,6 @@
 # check Qt version
-!equals(QT_MAJOR_VERSION, 4)|lessThan(QT_MINOR_VERSION, 5) {
-        error('FassiChip requires Qt version 4.6 or greater')
+!equals(QT_MAJOR_VERSION, 5)|lessThan(QT_MINOR_VERSION, 6) {
+        error('FassiChip requires Qt version 5.2 or greater')
 }
 
 TRANSLATIONS = languages/fassichip_pt.ts

@@ -10,6 +10,7 @@ class PlugDriver : public QObject, public FPluginInterface
 {
     Q_OBJECT
     Q_INTERFACES(FPluginInterface)
+    Q_PLUGIN_METADATA(IID "com.fassi.fassichip.driver" FILE "driver.json")
 
 public:
     QString Name() { return tr("Driver"); }

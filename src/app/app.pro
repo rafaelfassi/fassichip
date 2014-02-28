@@ -2,6 +2,9 @@ SRC_ROOT = ..
 PRO_ROOT = ../..
 QT *= core \
     gui
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 TARGET = fassichip
 UI_DIR = $$PRO_ROOT/tmp
 MOC_DIR = $$PRO_ROOT/tmp
@@ -11,8 +14,6 @@ TEMPLATE = app
 
 #QMAKE_CXXFLAGS += -fPIC
 
-INCLUDEPATH *= src \
-    src/data
 INCLUDEPATH *= $$SRC_ROOT \
     $$SRC_ROOT/data
 DEPENDPATH *= $$SRC_ROOT \

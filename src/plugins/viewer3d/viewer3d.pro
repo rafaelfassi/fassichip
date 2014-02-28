@@ -2,6 +2,9 @@ PRO_ROOT = ../../..
 SRC_ROOT = ../..
 QT *= core \
     gui
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 TARGET = c4viewer3d
 TEMPLATE = lib
 CONFIG += plugin
@@ -12,3 +15,6 @@ SOURCES += plugviewer3d.cpp \
     fviewer3d.cpp
 HEADERS += plugviewer3d.h \
     fviewer3d.h
+
+OTHER_FILES += \
+    viewer3d.json

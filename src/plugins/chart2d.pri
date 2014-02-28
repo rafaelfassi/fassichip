@@ -5,6 +5,6 @@ INCLUDEPATH += $$SRC_ROOT/chart2d
 
 DEPENDPATH += $$SRC_ROOT/chart2d
 
-SOURCES *= fchart2d.cpp
+SOURCES *= $$SRC_ROOT/chart2d/fchart2d.cpp
 
-HEADERS *= fchart2d.h
+HEADERS *= $$SRC_ROOT/chart2d/fchart2d.h

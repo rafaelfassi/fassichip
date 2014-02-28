@@ -7,13 +7,16 @@
 #include <QVector>
 #include <math.h>
 
-#if defined(Q_CC_MINGW)
+#if defined(Q_CC_MINGW) || defined(Q_CC_MSVC)
     #define IsNan  _isnan
 #else
     #define IsNan  isnan
 #endif
 
-#define NanValue 0.0F/0.0F
+static const unsigned long __nan[2] = {0xffffffff, 0x7fffffff};
+#define NanValue (*(const float *) __nan)
+
+//#define NanValue 0.0F/0.0F
 
 typedef unsigned char word8;
 typedef char word8s;

@@ -5,6 +5,6 @@ INCLUDEPATH += $$SRC_ROOT/hexview
 
 DEPENDPATH += $$SRC_ROOT/hexview
 
-SOURCES *= fhexview.cpp
+SOURCES *= $$SRC_ROOT/hexview/fhexview.cpp
 
-HEADERS *= fhexview.h
+HEADERS *= $$SRC_ROOT/hexview/fhexview.h

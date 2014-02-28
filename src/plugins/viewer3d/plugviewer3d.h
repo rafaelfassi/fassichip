@@ -12,6 +12,7 @@ class PlugViewer3d : public QObject, public FPluginInterface
 {
     Q_OBJECT
     Q_INTERFACES(FPluginInterface)
+    Q_PLUGIN_METADATA(IID "com.fassi.fassichip.viewer3d" FILE "viewer3d.json")
 
 public:
     QString Name() { return "Viewer3d"; }

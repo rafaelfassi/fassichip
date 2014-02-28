@@ -13,6 +13,7 @@ class PlugGraphicEditor : public QObject, public FPluginInterface
 {
     Q_OBJECT
     Q_INTERFACES(FPluginInterface)
+    Q_PLUGIN_METADATA(IID "com.fassi.fassichip.graphiceditor" FILE "graphiceditor.json")
 
 public:
     QString Name() { return "GraphicEditor"; }

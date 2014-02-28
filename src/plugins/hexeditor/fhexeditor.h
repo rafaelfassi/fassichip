@@ -1,7 +1,7 @@
 #ifndef FHEXEDITOR_H
 #define FHEXEDITOR_H
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "fwindowtab.h"
 #include "fdatapackage.h"

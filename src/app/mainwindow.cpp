@@ -22,6 +22,7 @@
 #include <QSplashScreen>
 #include <QComboBox>
 #include <QTimer>
+#include <QMimeData>
 
 
 MainWindow::MainWindow(QSplashScreen *SplashScreen, QWidget *parent) :

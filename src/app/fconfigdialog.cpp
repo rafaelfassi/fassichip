@@ -1,7 +1,7 @@
 #include "fconfigdialog.h"
 #include "fplugininterface.h"
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QStyleFactory>
 
 FConfigDialog::FConfigDialog(QList<FPluginInterface*> *_Plugins, QWidget *parent) :

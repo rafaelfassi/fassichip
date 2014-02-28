@@ -1,6 +1,7 @@
 #include "fscripteditor.h"
 
 #include <QDesktopWidget>
+#include <QInputDialog>
 
 FScriptEditor::FScriptEditor(QWidget *parent, FDriverElement *ObjParent) :
     QWidget(parent, Qt::Window)

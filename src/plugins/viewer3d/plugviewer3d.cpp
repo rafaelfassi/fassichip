@@ -47,4 +47,4 @@ void PlugViewer3d::NewViewer3d(FDataPackage *_DataPackage, QString _Label)
     MainWindow->RefreshDataTabs();
 }
 
-Q_EXPORT_PLUGIN2(plugviewer3d, PlugViewer3d)
+//Q_EXPORT_PLUGIN2(plugviewer3d, PlugViewer3d)

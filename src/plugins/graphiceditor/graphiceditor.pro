@@ -2,6 +2,9 @@ PRO_ROOT = ../../..
 SRC_ROOT = ../..
 QT *= core \
     gui
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 TARGET = c4graphiceditor
 TEMPLATE = lib
 CONFIG += plugin
@@ -18,3 +21,6 @@ HEADERS += pluggraphiceditor.h \
     fgraphiceditor.h \
     fgraphiceditorcfg.h
 RESOURCES += graphiceditor.qrc
+
+OTHER_FILES += \
+    graphiceditor.json

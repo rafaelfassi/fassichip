@@ -93,4 +93,4 @@ void PlugGraphicEditor::ReadSettingsWidget()
     Config->WriteSettings();
 }
 
-Q_EXPORT_PLUGIN2(pluggraphiceditor, PlugGraphicEditor)
+//Q_EXPORT_PLUGIN2(pluggraphiceditor, PlugGraphicEditor)

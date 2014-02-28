@@ -60,4 +60,4 @@ void PlugHexEditor::NewHexEditor(FDataPackage *_DataPackage, QString _Label)
     MainWindow->RefreshDataTabs();
 }
 
-Q_EXPORT_PLUGIN2(plughexeditor, PlugHexEditor)
+//Q_EXPORT_PLUGIN2(plughexeditor, PlugHexEditor)
