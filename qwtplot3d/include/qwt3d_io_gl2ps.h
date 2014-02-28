@@ -3,11 +3,12 @@
 
 #include <time.h>
 
-#if QT_VERSION < 0x040000
-#include <qgl.h>
-#else
-#include <QtOpenGL/qgl.h>
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#include "windows.h"
 #endif
+
+#include <GL/glu.h>
+#include <QtOpenGL/qgl.h>
 
 #include "qwt3d_types.h"
 #include "qwt3d_io.h"

@@ -3,19 +3,24 @@
 
 TARGET            = qwtplot3d
 TEMPLATE          = lib
-CONFIG           += qt warn_on opengl thread zlib debug
+CONFIG           += qt warn_on opengl desktop thread zlib debug
 MOC_DIR           = tmp
 OBJECTS_DIR       = tmp
 INCLUDEPATH       = include
 DEPENDPATH        = include src
-DESTDIR      			= lib
-#DESTDIR      			= ../../../lib
+
+win32:CONFIG(release, debug|release): DESTDIR += ../bin/lib/release
+ else:win32:CONFIG(debug, debug|release): DESTDIR += ../bin/lib/debug
+ else:unix:!symbian: DESTDIR = $$PRO_ROOT/bin/lib
+
 QT += opengl
 
-win32:TEMPLATE    = vclib
-win32:CONFIG     += dll exceptions
+#win32:TEMPLATE    = vclib
+win32:CONFIG     += shared static exceptions
 win32:dll:DEFINES    += QT_DLL QWT3D_DLL QWT3D_MAKEDLL
 win32:QMAKE_CXXFLAGS     += $$QMAKE_CFLAGS_STL
+
+unix:LIBS += -lGLU
 
 # Comment the next line, if you have zlib on your windows system
 win32:CONFIG -= zlib
