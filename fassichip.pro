@@ -1,5 +1,5 @@
 # check Qt version
-!equals(QT_MAJOR_VERSION, 5)|lessThan(QT_MINOR_VERSION, 2) {
+!equals(QT_MAJOR_VERSION, 5)|lessThan(QT_MINOR_VERSION, 1) {
         error('FassiChip requires Qt version 5.2 or greater')
 }
 

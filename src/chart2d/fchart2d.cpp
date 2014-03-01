@@ -420,7 +420,7 @@ void FChart2d::RefreshScreen()
 
     Pixmap = QPixmap(size());
     if(Pixmap.isNull()) return;
-    Pixmap.fill(this, 0, 0);
+    Pixmap.fill(Qt::white);
     QPainter Painter(&Pixmap);
     Painter.initFrom(this);
 

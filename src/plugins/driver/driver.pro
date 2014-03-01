@@ -44,14 +44,5 @@ win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$LIB_PATH/release/qscin
  else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$LIB_PATH/debug/qscintilla2.lib
  else:unix:!symbian: PRE_TARGETDEPS += $$LIB_PATH/libqscintilla2.a
 
-
-#unix:LIBS *= -lqscintilla2
-#win32 {
-#    LIBS *= $$PRO_ROOT/qscintilla/lib/libqscintilla2.a
-#    DEFINES *= QT_DLL
-#    INCLUDEPATH += $$PRO_ROOT/qscintilla/Qt4
-#    DEPENDPATH += $$PRO_ROOT/qscintilla/Qt4
-#}
-
 OTHER_FILES += \
     driver.json

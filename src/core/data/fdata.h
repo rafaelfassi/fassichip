@@ -13,10 +13,13 @@
     #define IsNan  isnan
 #endif
 
-static const unsigned long __nan[2] = {0xffffffff, 0x7fffffff};
-#define NanValue (*(const float *) __nan)
+#if defined(Q_CC_MSVC)
+    static const unsigned long __nan[2] = {0xffffffff, 0x7fffffff};
+    #define NanValue (*(const float *) __nan)
+#else
+    #define NanValue 0.0F/0.0F
+#endif
 
-//#define NanValue 0.0F/0.0F
 
 typedef unsigned char word8;
 typedef char word8s;
