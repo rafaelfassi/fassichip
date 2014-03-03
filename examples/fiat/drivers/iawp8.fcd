@@ -124,9 +124,9 @@ obj.ChkSum = function()
 
         sum16 += Data.ReadValue(0x14FE);
 
-        MsgBox.text = Data.To_16Bits(sum16);
+        MsgBox.text = Data.To16Bits(sum16);
         MsgBox.exec();
-        this.Dialog.LabChkSum.text = Data.To_16Bits(sum16);
+        this.Dialog.LabChkSum.text = Data.To16Bits(sum16);
 };
 
 obj;</StrScript>
@@ -135,7 +135,7 @@ obj;</StrScript>
         <Item>Diversos</Item>
     </Groups>
     <Script Name="Sem Diálogo" Group="Diversos">
-        <UiFileName/>
+        <UiFileName></UiFileName>
         <StrScript>var View2d = new DataObj;
 View2d.StartAddress = 0xAE0;
 View2d.EndAddress = 0xB7F;

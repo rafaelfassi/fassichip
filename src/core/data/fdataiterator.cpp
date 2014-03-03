@@ -1,4 +1,5 @@
 #include "fdataiterator.h"
+#include "misc.h"
 
 FDataIterator::FDataIterator(FData *_Data, QObject *parent) :
     QObject(parent)
@@ -36,4 +37,28 @@ QString FDataIterator::GetModeBits()
         case BITSF: return "Float";
         default: return ""; //ERRO
     }
+}
+
+QString FDataIterator::ToHex(double _Value, int _Dig)
+{
+    return DoubleToHexS(_Value, _Dig);
+}
+
+double FDataIterator::BitXor(double _Value1, double _Value2)
+{
+  return ((qint64)_Value1 ^ (qint64)_Value2);
+}
+
+double FDataIterator::BitAnd(double _Value1, double _Value2)
+{
+    return ((qint64)_Value1 & (qint64)_Value2);
+}
+
+double FDataIterator::GetCRC32(int _StartPos, double _EndPos)
+{
+    CRC32 crc32;
+    int id = Data->GetId(FileType);
+    unsigned char *buffer = reinterpret_cast<unsigned char *>(Data->AddressBuffer(id));
+    crc32.update(&buffer[_StartPos], _EndPos - _StartPos + 1);
+    return crc32.result();
 }

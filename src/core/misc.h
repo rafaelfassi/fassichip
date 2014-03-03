@@ -8,9 +8,23 @@
 #include <math.h>
 
 
-QString DoubleToHexS(double _Value, int _Dig);
+QString DoubleToHexS(double _Value, int _Dig = 0);
 qint64 HexToInt(QString HexValue);
 qint64 ApproximateInt(double _Number);
+
+class CRC32
+{
+private:
+    unsigned long           crc_accum;
+    static unsigned long    crc_table[ 256 ];
+    static bool             crc_initialized;
+
+public:
+    CRC32(unsigned long initialValue = (unsigned long) - 1);
+
+    void            update(unsigned char *buffer, int bufferLen);
+    unsigned long   result();
+};
 
 class FHexValidator : public QValidator
 {

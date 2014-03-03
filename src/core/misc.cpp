@@ -1,12 +1,18 @@
 #include "misc.h"
 
+bool            CRC32::crc_initialized = false;
+unsigned long   CRC32::crc_table[ 256 ];
+
 QString DoubleToHexS(double _Value, int _Dig)
 {
     try
     {
         QString Str1 = QString::number((qint64)fabs(_Value), 16).toUpper();
 
-        while(Str1.length() < _Dig) Str1 = "0" + Str1;
+        if(_Dig > 0)
+        {
+            Str1 = Str1.rightJustified(_Dig, '0');
+        }
 
         if(_Value < 0) return "-" + Str1;
         else return Str1;
@@ -46,6 +52,36 @@ qint64 ApproximateInt(double _Number)
 
  return (long int)_Number;
 }
+
+CRC32::CRC32(unsigned long initialValue)
+{
+    crc_accum = initialValue;
+
+    if (!crc_initialized) {
+        for (int byte = 0; byte != 256; byte++) {
+            unsigned long data = byte;
+
+            for (int i = 8; i > 0 ; --i)
+                data = data & 1 ? (data >> 1) ^ 0xEDB88320 : data >> 1;
+
+            crc_table[ byte ] = data;
+        }
+
+        crc_initialized = true;
+    }
+}
+
+void CRC32::update(unsigned char *buffer, int bufferLen)
+{
+    while (bufferLen-- > 0)
+        crc_accum = ((crc_accum >> 8) & 0x00FFFFFF) ^ crc_table[(crc_accum & 0xff) ^ *buffer++ ];
+}
+
+unsigned long CRC32::result()
+{
+    return (~crc_accum) & 0xFFFFFFFF;
+}
+
 
 FHexValidator::FHexValidator(QObject *parent, qint64 _Min, qint64 _Max, bool _Signal)
     : QValidator(parent)

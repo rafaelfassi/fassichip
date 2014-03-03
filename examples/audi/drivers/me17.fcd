@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE FassiChip_Driver>
+<Driver version="3.0">
+    <Script Group="CheckSum" Name="CheckSum">
+        <UiFileName>FormChk.ui</UiFileName>
+        <StrScript>var obj = new Object;
+obj.UseDialog = true;
+
+obj.Run = function() 
+{
+	if (!this.initialized)
+	{
+		this.Dialog.btnCalculate.clicked.connect(this, this.ChkSum);
+		this.initialized = true;
+	}
+	this.Dialog.show();
+};
+
+obj.ChkSum = function() 
+{
+        var sum16;      
+        var addressIni32;
+        var addressFin32;
+        var valueBlock;
+        var complBlock;
+
+        Data.FileType = 0;
+        Data.Signal = false;
+        Data.Swap = true;
+
+        for(var posBlock = 0x1FC20; posBlock &lt; 0x1FE18; posBlock+= 16)
+        {
+                Data.ModeBits = "32Bits";
+                addressIni32 = Data.ReadValue(posBlock) - 0x800000;
+                addressFin32 = Data.ReadValue(posBlock+4) - 0x800000;
+                valueBlock = Data.ReadValue(posBlock+8);
+                complBlock = Data.ReadValue(posBlock+12);
+                
+                sum16 = 0;
+                
+                printOut("Calculating block from " + Data.ToHex(addressIni32) + " to " + Data.ToHex(addressFin32));
+                
+                Data.ModeBits = "16Bits";
+                for(var x = addressIni32; x &lt;= addressFin32; x+=2)
+                {
+                        sum16 += Data.ReadValue(x);
+                }
+                                
+                if(sum16 == valueBlock)
+                {
+                        if(complBlock == Data.BitXor(sum16, 0xFFFFFFFF))
+                                printOut("-->Block Ok");
+                        else
+                               printOut("-->Block Complement Error"); 
+                }
+                else
+                {
+                        printOut("-->Block Error");
+                }
+        }
+        
+        
+        sum16 = 0;
+        for(var posBlock = 0x1BFE6; posBlock &lt; 0x1BFF2; posBlock+= 8)
+        {
+                Data.ModeBits = "32Bits";
+                addressIni32 = Data.ReadValue(posBlock) - 0x800000;
+                addressFin32 = Data.ReadValue(posBlock+4) - 0x800000;
+                
+                printOut("Calculating block from " + Data.ToHex(addressIni32) + " to " + Data.ToHex(addressFin32));
+                
+                Data.ModeBits = "16Bits";
+                for(var x = addressIni32; x &lt;= addressFin32; x+=2)
+                {
+                        sum16 += Data.ReadValue(x);
+                }
+        }
+        
+        Data.ModeBits = "32Bits";
+        valueBlock = Data.ReadValue(0x7FFE0);
+        complBlock = Data.ReadValue(0x7FFE4);
+        
+        sum16 = Data.BitAnd(sum16, 0xFFFFFFFF);
+        
+        if(sum16 == valueBlock)
+        {
+                if(complBlock == Data.BitXor(sum16, 0xFFFFFFFF))
+                        printOut("-->Blocks Ok");
+                else
+                       printOut("-->Blocks Complement Error");
+        }
+        else
+        {
+                printOut("-->Blocks Error");
+        }
+        
+        addressIni32 = 0x14300;
+        addressFin32 = 0x17F67;
+        
+        printOut("Calculating CRC from " + Data.ToHex(addressIni32) + " to " + Data.ToHex(addressFin32));
+        
+        var crc32 = Data.GetCRC32(addressIni32, addressFin32);
+        
+        if(crc32 == Data.ReadValue(0x6BD90))
+                printOut("-->CRC Ok");
+        else
+                printOut("-->CRC Error");
+};
+
+function printOut(outValue2)
+{
+        obj.Dialog.edtOut.plainText += outValue2 + "\n";
+};
+
+obj;</StrScript>
+    </Script>
+    <Groups>
+        <Item>CheckSum</Item>
+    </Groups>
+</Driver>
