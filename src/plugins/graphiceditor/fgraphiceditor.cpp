@@ -162,8 +162,10 @@ void FGraphicEditor::on_Chart2d_PointerChange(int)
     if(ActViewChart3D->isChecked()) DefinePointerChart3d();
 }
 
-void FGraphicEditor::on_GraphicEdtTool_SelectionEdited(int, int, int)
+void FGraphicEditor::on_GraphicEdtTool_SelectionEdited(int _selIni, int _selNPos, int _selMulti)
 {
+    Chart2d->SetSelection(_selIni, _selNPos, _selMulti);
+
     if(ActViewChart3D->isChecked())
     {
         DataMap3d.ModeDataValZ = DataMode;
@@ -174,10 +176,28 @@ void FGraphicEditor::on_GraphicEdtTool_SelectionEdited(int, int, int)
     }
 }
 
-void FGraphicEditor::on_GraphicEdtTool_PointerEdited(int)
+void FGraphicEditor::on_GraphicEdtTool_PointerEdited(int _pointer)
 {
-    if(ActViewChart3D->isChecked()) DefinePointerChart3d();
+    Chart2d->SetPointer(_pointer);
     Chart2d->GotoPointer();
+
+    if(ActViewChart3D->isChecked())
+        DefinePointerChart3d();
+}
+
+void FGraphicEditor::on_GraphicEdtTool_OffsetChanged()
+{
+    Chart2d->RefreshScreen();
+
+    if(ActViewChart3D->isChecked()
+       && Data->GetSerieMain() != Data->GetId(EDIT)) // Não é necessário pois a série de edição não tem offset
+    {
+        DataMap3d.ModeDataValZ = DataMode;
+        DataMap3d.ReadMap(Chart2d->GetSelectionIni(), Chart2d->GetSelectionNPos(), Chart2d->GetSelectionMult());
+        DataMap3d.CreateDefaultScale();
+        Chart3d->Update();
+        DefinePointerChart3d();
+    }
 }
 
 void FGraphicEditor::DefinePointerChart3d()
@@ -507,12 +527,12 @@ void FGraphicEditor::CreateConnections()
     connect(Chart2d, SIGNAL(PageChange(int,int)), GraphicEdtTool, SLOT(SetPage(int,int)));
 
     // Conectar primeiro ao Chart2D
-    connect(GraphicEdtTool, SIGNAL(SelectionEdited(int,int,int)), Chart2d, SLOT(SetSelection(int,int,int)));
-    connect(GraphicEdtTool, SIGNAL(PointerEdited(int)), Chart2d, SLOT(SetPointer(int)));
     connect(GraphicEdtTool, SIGNAL(PageEdited(int,int)), Chart2d, SLOT(SetPage(int,int)));
-    connect(GraphicEdtTool, SIGNAL(OffsetChanged()), Chart2d, SLOT(RefreshScreen()));
+
 
     // Depois ao form, pois os slots do Clart2D devem ser chamados primeiro
+    connect(GraphicEdtTool, SIGNAL(OffsetChanged()),
+            this, SLOT(on_GraphicEdtTool_OffsetChanged()));
     connect(GraphicEdtTool, SIGNAL(SelectionEdited(int,int,int)),
             this, SLOT(on_GraphicEdtTool_SelectionEdited(int,int,int)));
     connect(GraphicEdtTool, SIGNAL(PointerEdited(int)),
