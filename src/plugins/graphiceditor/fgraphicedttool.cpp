@@ -269,7 +269,28 @@ void FGraphicEdtTool::on_BtnMultipClicked()
     }
 }
 
-void FGraphicEdtTool::UpdateSetings()
+void FGraphicEdtTool::on_SpinBoxOffsetValueChanged(int _value)
+{
+    QSpinBox *spinBox = dynamic_cast<QSpinBox*>(sender());
+
+    int fileId(-1);
+
+    if(spinBox == SpinBoxOffsetOr && Data->ExistFileType(ORI))
+        fileId = Data->GetId(ORI);
+    else if(spinBox == SpinBoxOffsetComp && Data->ExistFileType(ActiveComp))
+        fileId = Data->GetId(ActiveComp);
+
+    _value = Data->GetPosByte(_value, *DataMode);
+
+    if(fileId >= 0)
+    {
+        Data->SetOffesetFile(fileId, _value);
+        emit OffsetChanged();
+    }
+
+}
+
+void FGraphicEdtTool::UpdateSettings()
 {
     if(Data->IsEmply())
     {
@@ -283,6 +304,7 @@ void FGraphicEdtTool::UpdateSetings()
     this->setEnabled(true);
 
     int _Size = Data->GetSizeFile(Data->GetSerieMain()) - 1;
+    int _RelSize = Data->GetPosRelative(_Size, *DataMode);
     int _Step = Data->GetPosByte(1, *DataMode);
 
     HexValidatorEnd->setRange(0, _Size);
@@ -292,32 +314,58 @@ void FGraphicEdtTool::UpdateSetings()
     SpinBoxPointer->SetSingleStep(_Step);
     SpinBoxSelIni->SetSingleStep(_Step);
 
-  QPalette pal = palette();
+    QPalette pal = palette();
 
-   if(Data->ExistFileType(ORI))
-   {
-     pal.setColor(QPalette::Text, Data->GetSerieColor(Data->GetId(ORI)));
-     EdtValOrHex->setPalette(pal);
-     EdtValOrDeci->setPalette(pal);
-   }
+    if(Data->ExistFileType(EDIT))
+    {
+        pal.setColor(QPalette::Text, Data->GetSerieColor(Data->GetId(EDIT)));
+        EdtValEdHex->setPalette(pal);
+        EdtValEdDeci->setPalette(pal);
+        EdtDifAbEd->setPalette(pal);
+        EdtDifPercEd->setPalette(pal);
+    }
 
-   if(Data->ExistFileType(EDIT))
-   {
-     pal.setColor(QPalette::Text, Data->GetSerieColor(Data->GetId(EDIT)));
-     EdtValEdHex->setPalette(pal);
-     EdtValEdDeci->setPalette(pal);
-     EdtDifAbEd->setPalette(pal);
-     EdtDifPercEd->setPalette(pal);
-   }
+    if(Data->ExistFileType(ORI))
+    {
+        int oriId = Data->GetId(ORI);
+        pal.setColor(QPalette::Text, Data->GetSerieColor(oriId));
+        EdtValOrHex->setPalette(pal);
+        EdtValOrDeci->setPalette(pal);
 
-   if(Data->ExistFileType(ActiveComp))
-   {
-     pal.setColor(QPalette::Text, Data->GetSerieColor(Data->GetId(ActiveComp)));
-     EdtValCompHex->setPalette(pal);
-     EdtValCompDeci->setPalette(pal);
-     EdtDifAbComp->setPalette(pal);
-     EdtDifPercComp->setPalette(pal);
-   }
+        int _RelSizeOri = Data->GetPosRelative(Data->GetSizeFile(oriId)-1, *DataMode);
+        SpinBoxOffsetOr->setRange(-_RelSizeOri, _RelSize);
+        SpinBoxOffsetOr->setEnabled(true);
+
+        if(SpinBoxOffsetOr->value())
+            Data->SetOffesetFile(oriId, Data->GetPosByte(SpinBoxOffsetOr->value(), *DataMode));
+    }
+    else
+    {
+        SpinBoxOffsetOr->setEnabled(false);
+        SpinBoxOffsetOr->setValue(0);
+    }
+
+    if(Data->ExistFileType(ActiveComp))
+    {
+        int compId = Data->GetId(ActiveComp);
+        pal.setColor(QPalette::Text, Data->GetSerieColor(compId));
+        EdtValCompHex->setPalette(pal);
+        EdtValCompDeci->setPalette(pal);
+        EdtDifAbComp->setPalette(pal);
+        EdtDifPercComp->setPalette(pal);
+
+        int _RelSizeComp = Data->GetPosRelative(Data->GetSizeFile(compId)-1, *DataMode);
+        SpinBoxOffsetComp->setRange(-_RelSizeComp, _RelSize);
+        SpinBoxOffsetComp->setEnabled(true);
+
+        if(SpinBoxOffsetComp->value())
+            Data->SetOffesetFile(compId, Data->GetPosByte(SpinBoxOffsetComp->value(), *DataMode));
+    }
+    else
+    {
+        SpinBoxOffsetComp->setEnabled(false);
+        SpinBoxOffsetComp->setValue(0);
+    }
 
 }
 
@@ -436,9 +484,13 @@ void FGraphicEdtTool::CreateForm()
 
     EdtValOrHex = new QLineEdit(this);
     EdtValOrHex->setFixedSize(100, 20);
+    EdtValOrHex->setReadOnly(true);
+    EdtValOrHex->setFocusPolicy(Qt::NoFocus);
 
     EdtValOrDeci = new QLineEdit(this);
     EdtValOrDeci->setFixedSize(100, 20);
+    EdtValOrDeci->setReadOnly(true);
+    EdtValOrDeci->setFocusPolicy(Qt::NoFocus);
 
     QLabel *LabDifAb = new QLabel(tr("Absolute diff"), this);
     LabDifAb->setFixedSize(100, 20);
@@ -460,15 +512,23 @@ void FGraphicEdtTool::CreateForm()
 
     EdtValCompHex = new QLineEdit(this);
     EdtValCompHex->setFixedSize(100, 20);
+    EdtValCompHex->setReadOnly(true);
+    EdtValCompHex->setFocusPolicy(Qt::NoFocus);
 
     EdtValCompDeci = new QLineEdit(this);
     EdtValCompDeci->setFixedSize(100, 20);
+    EdtValCompDeci->setReadOnly(true);
+    EdtValCompDeci->setFocusPolicy(Qt::NoFocus);
 
     EdtDifAbComp = new QLineEdit(this);
     EdtDifAbComp->setFixedSize(100, 20);
+    EdtDifAbComp->setReadOnly(true);
+    EdtDifAbComp->setFocusPolicy(Qt::NoFocus);
 
     EdtDifPercComp = new QLineEdit(this);
     EdtDifPercComp->setFixedSize(60, 20);
+    EdtDifPercComp->setReadOnly(true);
+    EdtDifPercComp->setFocusPolicy(Qt::NoFocus);
 
     QGridLayout *GridLayValues = new QGridLayout;
     GridLayValues->setHorizontalSpacing(1);
@@ -628,5 +688,8 @@ void FGraphicEdtTool::CreateConnections()
     connect(BtnNPosInc, SIGNAL(clicked()), this, SLOT(on_BtnNPosClicked()));
     connect(BtnMultipDec, SIGNAL(clicked()), this, SLOT(on_BtnMultipClicked()));
     connect(BtnMultipInc, SIGNAL(clicked()), this, SLOT(on_BtnMultipClicked()));
+
+    connect(SpinBoxOffsetOr, SIGNAL(valueChanged(int)), this, SLOT(on_SpinBoxOffsetValueChanged(int)));
+    connect(SpinBoxOffsetComp, SIGNAL(valueChanged(int)), this, SLOT(on_SpinBoxOffsetValueChanged(int)));
 
 }

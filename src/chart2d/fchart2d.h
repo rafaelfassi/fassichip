@@ -34,7 +34,6 @@ public:
     bool GetLockSelectionOnPage() { return LockSelectionOnPage; }
     void SetCursorMode(int _Cursor);
     //void SetSelectionMult(int _SelMult) { SelectionMult = _SelMult; }
-    void RefreshScreen();
     void UpdateSettings();
     int GetPointer() { return AddressExp(PosPointer); }
     int GetSelectionIni() { return AddressExp(SelectionIni); }
@@ -62,6 +61,7 @@ public:
     int MarginVert() const { return MarginTop + MarginButton; }
 
 public slots:
+    void RefreshScreen();
     void SetPointer(int _Pointer);
     void SetSelection(int _SelIni, int _SelNPos, int _SelMult);
     void SetPage(int _PageIni, int _NPoints);

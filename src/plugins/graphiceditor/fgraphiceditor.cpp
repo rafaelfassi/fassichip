@@ -91,9 +91,9 @@ void FGraphicEditor::RefreshData()
 
     EnableComparisons();
     Chart2d->UpdateSettings();
-    Chart2d->RefreshScreen();
     Chart2d->EmitSignals();
-    GraphicEdtTool->UpdateSetings();
+    GraphicEdtTool->UpdateSettings();
+    Chart2d->RefreshScreen();
 
 }
 
@@ -507,12 +507,10 @@ void FGraphicEditor::CreateConnections()
     connect(Chart2d, SIGNAL(PageChange(int,int)), GraphicEdtTool, SLOT(SetPage(int,int)));
 
     // Conectar primeiro ao Chart2D
-    connect(GraphicEdtTool, SIGNAL(SelectionEdited(int,int,int)),
-            Chart2d, SLOT(SetSelection(int,int,int)));
-    connect(GraphicEdtTool, SIGNAL(PointerEdited(int)),
-            Chart2d, SLOT(SetPointer(int)));
-    connect(GraphicEdtTool, SIGNAL(PageEdited(int,int)),
-            Chart2d, SLOT(SetPage(int,int)));
+    connect(GraphicEdtTool, SIGNAL(SelectionEdited(int,int,int)), Chart2d, SLOT(SetSelection(int,int,int)));
+    connect(GraphicEdtTool, SIGNAL(PointerEdited(int)), Chart2d, SLOT(SetPointer(int)));
+    connect(GraphicEdtTool, SIGNAL(PageEdited(int,int)), Chart2d, SLOT(SetPage(int,int)));
+    connect(GraphicEdtTool, SIGNAL(OffsetChanged()), Chart2d, SLOT(RefreshScreen()));
 
     // Depois ao form, pois os slots do Clart2D devem ser chamados primeiro
     connect(GraphicEdtTool, SIGNAL(SelectionEdited(int,int,int)),

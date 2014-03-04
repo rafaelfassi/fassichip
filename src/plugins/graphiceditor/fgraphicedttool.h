@@ -14,7 +14,7 @@ public:
     ~FGraphicEdtTool();
     void SetData(FData *_Data) { Data = _Data; }
     void SetDataMode(FDataMode *_DataMode) { DataMode = _DataMode; }
-    void UpdateSetings();
+    void UpdateSettings();
     void Update();
     void SetByteOffset(unsigned int _ByteOffset) { ByteOffset = _ByteOffset; }
     unsigned int GetByteOffset() { return ByteOffset; }
@@ -29,6 +29,7 @@ public slots:
     void on_SelectionChanged();
     void on_BtnNPosClicked();
     void on_BtnMultipClicked();
+    void on_SpinBoxOffsetValueChanged(int _value);
 
 private slots:
     void on_ScrollBarPtsPag_Change(int);
@@ -39,6 +40,7 @@ signals:
     void PointerEdited(int _Pointer);
     void SelectionEdited(int _SelIni, int _SelNPos, int _SelMult);
     void PageEdited(int _PageIni, int _NPoints);
+    void OffsetChanged();
 
 private:
     void CreateForm();
