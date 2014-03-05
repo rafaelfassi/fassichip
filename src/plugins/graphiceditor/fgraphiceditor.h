@@ -50,6 +50,7 @@ public slots:
     void on_Chart2d_SelectionChange(int _SelIni, int _SelNPos, int _SelMult);
     void on_GraphicEdtTool_SelectionEdited(int _SelIni, int _SelNPos, int _SelMult);
     void on_GraphicEdtTool_PointerEdited(int _Pointer);
+    void on_GraphicEdtTool_OffsetChanged();
     void on_SpinBoxByteOffset_Change(int _Value);
     void on_ViewChart3D_Triggered();
     void on_ChangeModeBits();

@@ -19,11 +19,13 @@
 #ifndef FDATA_H
 #define FDATA_H
 
-#define N_SERIES 5
-
 #include <QColor>
 #include <QVector>
+#include <QVariant>
+#include <QHash>
 #include <math.h>
+
+#define N_SERIES 5
 
 #if defined(Q_CC_MINGW) || defined(Q_CC_MSVC)
     #define IsNan  _isnan
@@ -68,6 +70,7 @@ public:
     QString FileName;
     QColor ColorFile;
     int Offset;
+    QHash<QString, QVariant> Attributes;
 };
 
 class FDataMode
@@ -113,10 +116,12 @@ public:
    void SetColorFile(int _Id, QColor _Color) { Files[_Id].ColorFile = _Color; }
    QString GetFileName(int _Id) const { return Files[_Id].FileName; }
    void SetFileName(int _Id, QString _FileName) { Files[_Id].FileName = _FileName; }
-   void SetOffesetFile(int _Id, int _Offset) { Files[_Id].Offset = _Offset; }
+   void SetOffsetFile(int _Id, int _Offset) { Files[_Id].Offset = _Offset; }
+   int GetOffsetFile(int _Id) { return Files[_Id].Offset; }
+   bool ContainsAttribute(int _Id, QString _AttributeName) { return Files[_Id].Attributes.contains(_AttributeName); }
+   QVariant GetAttribute(int _Id, QString _AttributeName) { return Files[_Id].Attributes[_AttributeName]; }
+   void SetAttribute(int _Id, QString _AttributeName, QVariant _Value) { Files[_Id].Attributes[_AttributeName] = _Value; }
    int GetMaxFileType() const { return MaxFileType; }
-   //double NanValue();
-
 
 
    void Undo();

@@ -50,11 +50,15 @@ void FGraphicEdtTool::SetPointer(int _Pointer)
        if(DataMode->Mode == BITSF) EdtValOrHex->setText("-");
        else EdtValOrHex->setText(DoubleToHexS(ValOri, 1));
        EdtValOrDeci->setText(QString::number(ValOri));
+
+       int pointerOffset = _Pointer - Data->GetPosByte(SpinBoxOffsetOr->value(), *DataMode);
+       EdtPointerOr->setText(DoubleToHexS(pointerOffset));
     }
     else
     {
        EdtValOrHex->setText("-");
        EdtValOrDeci->setText("-");
+       EdtPointerOr->setText("-");
     }
 
     if(Data->ExistFileType(EDIT))
@@ -91,6 +95,9 @@ void FGraphicEdtTool::SetPointer(int _Pointer)
         else EdtValCompHex->setText(DoubleToHexS(ValComp, 1));
         EdtValCompDeci->setText(QString::number(ValComp));
 
+        int pointerComp = _Pointer - Data->GetPosByte(SpinBoxOffsetComp->value(), *DataMode);
+        EdtPointerComp->setText(DoubleToHexS(pointerComp));
+
         if(Data->ExistFileType(ORI))
         {
            EdtDifAbComp->setText(QString::number(ValComp - ValOri));
@@ -109,6 +116,7 @@ void FGraphicEdtTool::SetPointer(int _Pointer)
        EdtValCompDeci->setText("-");
        EdtDifAbComp->setText("-");
        EdtDifPercComp->setText("-");
+       EdtPointerComp->setText("-");
     }
 }
 
@@ -290,19 +298,30 @@ void FGraphicEdtTool::on_BtnMultipClicked()
 void FGraphicEdtTool::on_SpinBoxOffsetValueChanged(int _value)
 {
     QSpinBox *spinBox = dynamic_cast<QSpinBox*>(sender());
+    QLineEdit *edtPointer(0);
 
     int fileId(-1);
 
     if(spinBox == SpinBoxOffsetOr && Data->ExistFileType(ORI))
-        fileId = Data->GetId(ORI);
-    else if(spinBox == SpinBoxOffsetComp && Data->ExistFileType(ActiveComp))
-        fileId = Data->GetId(ActiveComp);
-
-    _value = Data->GetPosByte(_value, *DataMode);
-
-    if(fileId >= 0)
     {
-        Data->SetOffesetFile(fileId, _value);
+        fileId = Data->GetId(ORI);
+        edtPointer = EdtPointerOr;
+    }
+    else if(spinBox == SpinBoxOffsetComp && Data->ExistFileType(ActiveComp))
+    {
+        fileId = Data->GetId(ActiveComp);
+        edtPointer = EdtPointerComp;
+    }
+
+    int offset = Data->GetPosByte(_value, *DataMode);
+
+    if(fileId >= 0 && edtPointer)
+    {
+        int pointerOffset = SpinBoxPointer->GetValue() - offset;
+        edtPointer->setText(DoubleToHexS(pointerOffset));
+
+        Data->SetAttribute(fileId, "FGraphicEdtTool/Offset", _value);
+        Data->SetOffsetFile(fileId, offset);
         emit OffsetChanged();
     }
 
@@ -325,6 +344,9 @@ void FGraphicEdtTool::UpdateSettings()
     int _RelSize = Data->GetPosRelative(_Size, *DataMode);
     int _Step = Data->GetPosByte(1, *DataMode);
 
+    int oriId = Data->GetId(ORI);
+    int compId = Data->GetId(ActiveComp);
+
     HexValidatorEnd->setRange(0, _Size);
     SpinBoxPointer->SetRange(0, _Size);
     SpinBoxSelIni->SetRange(0, _Size);
@@ -345,17 +367,14 @@ void FGraphicEdtTool::UpdateSettings()
 
     if(Data->ExistFileType(ORI))
     {
-        int oriId = Data->GetId(ORI);
         pal.setColor(QPalette::Text, Data->GetSerieColor(oriId));
         EdtValOrHex->setPalette(pal);
         EdtValOrDeci->setPalette(pal);
+        EdtPointerOr->setPalette(pal);
 
         int _RelSizeOri = Data->GetPosRelative(Data->GetSizeFile(oriId)-1, *DataMode);
         SpinBoxOffsetOr->setRange(-_RelSizeOri, _RelSize);
         SpinBoxOffsetOr->setEnabled(true);
-
-        if(SpinBoxOffsetOr->value())
-            Data->SetOffesetFile(oriId, Data->GetPosByte(SpinBoxOffsetOr->value(), *DataMode));
     }
     else
     {
@@ -365,24 +384,34 @@ void FGraphicEdtTool::UpdateSettings()
 
     if(Data->ExistFileType(ActiveComp))
     {
-        int compId = Data->GetId(ActiveComp);
         pal.setColor(QPalette::Text, Data->GetSerieColor(compId));
         EdtValCompHex->setPalette(pal);
         EdtValCompDeci->setPalette(pal);
         EdtDifAbComp->setPalette(pal);
         EdtDifPercComp->setPalette(pal);
+        EdtPointerComp->setPalette(pal);
 
         int _RelSizeComp = Data->GetPosRelative(Data->GetSizeFile(compId)-1, *DataMode);
         SpinBoxOffsetComp->setRange(-_RelSizeComp, _RelSize);
         SpinBoxOffsetComp->setEnabled(true);
-
-        if(SpinBoxOffsetComp->value())
-            Data->SetOffesetFile(compId, Data->GetPosByte(SpinBoxOffsetComp->value(), *DataMode));
     }
     else
     {
         SpinBoxOffsetComp->setEnabled(false);
         SpinBoxOffsetComp->setValue(0);
+    }
+
+    for(int fileId = 0; fileId < Data->Count(); fileId++)
+    {
+        int offset(0);
+        if(Data->ContainsAttribute(fileId, "FGraphicEdtTool/Offset"))
+        {
+            offset = Data->GetAttribute(fileId, "FGraphicEdtTool/Offset").toInt();
+            Data->SetOffsetFile(fileId, Data->GetPosByte(offset, *DataMode));
+        }
+
+        if(fileId == oriId) SpinBoxOffsetOr->setValue(offset);
+        else if(fileId == compId) SpinBoxOffsetComp->setValue(offset);
     }
 
 }
@@ -438,6 +467,8 @@ void FGraphicEdtTool::CreateForm()
 
     EdtSelFin = new QLineEdit(this);
     EdtSelFin->setFixedSize(90, 20);
+    EdtSelFin->setReadOnly(true);
+    EdtSelFin->setFocusPolicy(Qt::NoFocus);
 
     QLabel *LabNPos = new QLabel(tr("X"), this);
     LabNPos->setFixedSize(15, 20);
@@ -628,15 +659,19 @@ void FGraphicEdtTool::CreateForm()
 
     EdtPointerOr = new QLineEdit(this);
     EdtPointerOr->setFixedSize(90, 20);
+    EdtPointerOr->setReadOnly(true);
+    EdtPointerOr->setFocusPolicy(Qt::NoFocus);
 
     SpinBoxOffsetOr = new QSpinBox(this);
-    SpinBoxOffsetOr->setFixedSize(70, 20);
+    SpinBoxOffsetOr->setFixedSize(70, 20);  
 
     QLabel *LabOffsetComp = new QLabel(tr("Comparison"), this);
     LabOffsetComp->setFixedSize(60, 20);
 
     EdtPointerComp = new QLineEdit(this);
     EdtPointerComp->setFixedSize(90, 20);
+    EdtPointerComp->setReadOnly(true);
+    EdtPointerComp->setFocusPolicy(Qt::NoFocus);
 
     SpinBoxOffsetComp = new QSpinBox(this);
     SpinBoxOffsetComp->setFixedSize(70, 20);
