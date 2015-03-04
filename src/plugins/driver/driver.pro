@@ -1,5 +1,5 @@
-PRO_ROOT = ../../..
-SRC_ROOT = ../..
+PRO_ROOT = $$PWD/../../..
+SRC_ROOT = $$PWD/../..
 QT *= core \
     gui \
     xml \
@@ -40,7 +40,9 @@ win32:CONFIG(release, debug|release): LIBS += -L$$LIB_PATH/release/ -lqscintilla
  else:win32:CONFIG(debug, debug|release): LIBS += -L$$LIB_PATH/debug/ -lqscintilla2
  else:unix: LIBS += -L$$LIB_PATH/ -lqscintilla2
 
-win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$LIB_PATH/release/qscintilla2.lib
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$LIB_PATH/release/libqscintilla2.a
+ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$LIB_PATH/debug/libqscintilla2.a
+ else:win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$LIB_PATH/release/qscintilla2.lib
  else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$LIB_PATH/debug/qscintilla2.lib
  else:unix:!symbian: PRE_TARGETDEPS += $$LIB_PATH/libqscintilla2.a
 

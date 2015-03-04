@@ -1,5 +1,5 @@
-PRO_ROOT = ../../..
-SRC_ROOT = ../..
+PRO_ROOT = $$PWD/../../..
+SRC_ROOT = $$PWD/../..
 QT *= core \
     gui
 

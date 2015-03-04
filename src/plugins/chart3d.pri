@@ -15,7 +15,9 @@ win32:CONFIG(release, debug|release): LIBS += -L$$LIB_PATH/release/ -lqwtplot3d
  else:win32:CONFIG(debug, debug|release): LIBS += -L$$LIB_PATH/debug/ -lqwtplot3d
  else:unix: LIBS += -L$$LIB_PATH/ -lqwtplot3d
 
-win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$LIB_PATH/release/qwtplot3d.lib
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$LIB_PATH/release/libqwtplot3d.a
+ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$LIB_PATH/debug/libqwtplot3d.a
+ else:win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$LIB_PATH/release/qwtplot3d.lib
  else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$LIB_PATH/debug/qwtplot3d.lib
  else:unix:!symbian: PRE_TARGETDEPS += $$LIB_PATH/libqwtplot3d.a
 
