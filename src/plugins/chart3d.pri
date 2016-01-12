@@ -26,3 +26,4 @@ QT *= opengl
 CONFIG *= opengl
 
 unix:LIBS += -lGLU
+win32: LIBS += -lOpenGL32 -lGlU32

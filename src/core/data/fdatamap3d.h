@@ -36,6 +36,7 @@ public:
     Q_INVOKABLE void CreateDefaultScale();
     Q_INVOKABLE void SetSize(int _SizeX, int _SizeY);
     Q_INVOKABLE void SetAddressZ(int _PosX, int _PosY, int _AddressZ);
+    Q_INVOKABLE void SetTitleGraf(QString _TitleGraf);
     QString TitleGraf;
     QString LabelX;
     QString LabelY;

@@ -84,3 +84,8 @@ void FDataMap3d::SetAddressZ(int _PosX, int _PosY, int _AddressZ)
     if(_PosX < AddressZ.GetSizeX() && _PosY < AddressZ.GetSizeY())
         AddressZ.SetAddressZ(_PosX, _PosY, _AddressZ);
 }
+
+void FDataMap3d::SetTitleGraf(QString _TitleGraf)
+{
+    TitleGraf = _TitleGraf;
+}

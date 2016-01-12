@@ -141,6 +141,8 @@ double FData::GetValue(int Id, int Pos, FDataMode _DataMode, bool *_Ok)
 
     if(Files.size() <= Id) { if(_Ok) *_Ok = false; return NanValue; }
 
+    FFile &file = Files[Id];
+
     union
     {
        word8 Tmp8b[4];
@@ -154,7 +156,7 @@ double FData::GetValue(int Id, int Pos, FDataMode _DataMode, bool *_Ok)
 
      Tmp32b = 0; //Zera todas as variáveis da união.
 
-     Pos -= Files[Id].Offset; // Offset do arquivo. Desloca o arquivo em relação aos outros.
+     Pos -= file.Offset; // Offset do arquivo. Desloca o arquivo em relação aos outros.
 
      const int _OffSetByte = GetPosByte(1, _DataMode);
 
@@ -165,53 +167,53 @@ double FData::GetValue(int Id, int Pos, FDataMode _DataMode, bool *_Ok)
        switch(_DataMode.Mode)
        {
              case BITS8:
-                     Tmp8b[0] = Files[Id].Buffer[Pos];
+                     Tmp8b[0] = file.Buffer[Pos];
                      if(_DataMode.Signal) return  Tmp8bs[0];
                      else return Tmp8b[0];
              case BITS16:
                      if(_DataMode.Swap) // No PC por padrão os bytes ja são invertidos.
                      {
-                       Tmp8b[0] =  Files[Id].Buffer[Pos];
-                       Tmp8b[1] =  Files[Id].Buffer[Pos + 1];
+                       Tmp8b[0] =  file.Buffer[Pos];
+                       Tmp8b[1] =  file.Buffer[Pos + 1];
                      }
                      else
                      {
-                       Tmp8b[1] =  Files[Id].Buffer[Pos];
-                       Tmp8b[0] =  Files[Id].Buffer[Pos + 1];
+                       Tmp8b[1] =  file.Buffer[Pos];
+                       Tmp8b[0] =  file.Buffer[Pos + 1];
                      }
                      if(_DataMode.Signal) return Tmp16bs[0];
                      else return Tmp16b[0];
              case BITS32:
                      if(_DataMode.Swap) // No PC por padrão os bytes ja são invertidos.
                      {
-                       Tmp8b[0] =  Files[Id].Buffer[Pos];
-                       Tmp8b[1] =  Files[Id].Buffer[Pos + 1];
-                       Tmp8b[2] =  Files[Id].Buffer[Pos + 2];
-                       Tmp8b[3] =  Files[Id].Buffer[Pos + 3];
+                       Tmp8b[0] =  file.Buffer[Pos];
+                       Tmp8b[1] =  file.Buffer[Pos + 1];
+                       Tmp8b[2] =  file.Buffer[Pos + 2];
+                       Tmp8b[3] =  file.Buffer[Pos + 3];
                      }
                      else
                      {
-                       Tmp8b[3] =  Files[Id].Buffer[Pos];
-                       Tmp8b[2] =  Files[Id].Buffer[Pos + 1];
-                       Tmp8b[1] =  Files[Id].Buffer[Pos + 2];
-                       Tmp8b[0] =  Files[Id].Buffer[Pos + 3];
+                       Tmp8b[3] =  file.Buffer[Pos];
+                       Tmp8b[2] =  file.Buffer[Pos + 1];
+                       Tmp8b[1] =  file.Buffer[Pos + 2];
+                       Tmp8b[0] =  file.Buffer[Pos + 3];
                      }
                      if(_DataMode.Signal) return Tmp32bs;
                      else return Tmp32b;
              case BITSF:
                      if(_DataMode.Swap) // No PC por padrão os bytes ja são invertidos.
                      {
-                       Tmp8b[0] =  Files[Id].Buffer[Pos];
-                       Tmp8b[1] =  Files[Id].Buffer[Pos + 1];
-                       Tmp8b[2] =  Files[Id].Buffer[Pos + 2];
-                       Tmp8b[3] =  Files[Id].Buffer[Pos + 3];
+                       Tmp8b[0] =  file.Buffer[Pos];
+                       Tmp8b[1] =  file.Buffer[Pos + 1];
+                       Tmp8b[2] =  file.Buffer[Pos + 2];
+                       Tmp8b[3] =  file.Buffer[Pos + 3];
                      }
                      else
                      {
-                       Tmp8b[3] =  Files[Id].Buffer[Pos];
-                       Tmp8b[2] =  Files[Id].Buffer[Pos + 1];
-                       Tmp8b[1] =  Files[Id].Buffer[Pos + 2];
-                       Tmp8b[0] =  Files[Id].Buffer[Pos + 3];
+                       Tmp8b[3] =  file.Buffer[Pos];
+                       Tmp8b[2] =  file.Buffer[Pos + 1];
+                       Tmp8b[1] =  file.Buffer[Pos + 2];
+                       Tmp8b[0] =  file.Buffer[Pos + 3];
                      }
                      return TmpFloat;
        }
@@ -245,11 +247,13 @@ bool FData::SetValue(int Pos, double _Value, FDataMode _DataMode, int _UndoFlags
 
     if(Id < 0) return false; // O arquivo de edição não está aberto
 
+    FFile &file = Files[Id];
+
     // Quando ocorrer uma edição o refazer deve ser rezetado, exceto quado a edição for
     // chamada pelo Undo() ou pelo próprio Redo().
     if(CanClearRedo) RedoClear();
 
-    Pos -= Files[Id].Offset; // Offset do arquivo. Desloca o arquivo em relação aos outros.
+    Pos -= file.Offset; // Offset do arquivo. Desloca o arquivo em relação aos outros.
 
     // OffSet que deverá ser subtraído ao final do arquivo, a depender do modo.
     // Ex. Na visualização de 16Bits de um arquivo de tamanho 7FFF (8000 - 1 = Size - 1) o endereço 7FFF não
@@ -293,20 +297,20 @@ bool FData::SetValue(int Pos, double _Value, FDataMode _DataMode, int _UndoFlags
              case BITS8:
                      if(_DataMode.Signal) Tmp8bs[0] = _Value;
                      else Tmp8b[0] = _Value;
-                     Files[Id].Buffer[Pos] = Tmp8bs[0];
+                     file.Buffer[Pos] = Tmp8bs[0];
                      break;
              case BITS16:
                      if(_DataMode.Signal) Tmp16bs[0] = _Value;
                      else Tmp16b[0] = _Value;
                      if(_DataMode.Swap) // No PC por padrão os bytes ja são invertidos.
                      {
-                       Files[Id].Buffer[Pos] = Tmp8bs[0];
-                       Files[Id].Buffer[Pos + 1] = Tmp8bs[1];
+                       file.Buffer[Pos] = Tmp8bs[0];
+                       file.Buffer[Pos + 1] = Tmp8bs[1];
                      }
                      else
                      {
-                       Files[Id].Buffer[Pos] = Tmp8bs[1];
-                       Files[Id].Buffer[Pos + 1] = Tmp8bs[0];
+                       file.Buffer[Pos] = Tmp8bs[1];
+                       file.Buffer[Pos + 1] = Tmp8bs[0];
                      }
                      break;
              case BITS32:
@@ -314,34 +318,34 @@ bool FData::SetValue(int Pos, double _Value, FDataMode _DataMode, int _UndoFlags
                      else Tmp32b = _Value;
                      if(_DataMode.Swap) // No PC por padrão os bytes ja são invertidos.
                      {
-                       Files[Id].Buffer[Pos] = Tmp8bs[0];
-                       Files[Id].Buffer[Pos + 1] = Tmp8bs[1];
-                       Files[Id].Buffer[Pos + 2] = Tmp8bs[2];
-                       Files[Id].Buffer[Pos + 3] = Tmp8bs[3];
+                       file.Buffer[Pos] = Tmp8bs[0];
+                       file.Buffer[Pos + 1] = Tmp8bs[1];
+                       file.Buffer[Pos + 2] = Tmp8bs[2];
+                       file.Buffer[Pos + 3] = Tmp8bs[3];
                      }
                      else
                      {
-                       Files[Id].Buffer[Pos] = Tmp8bs[3];
-                       Files[Id].Buffer[Pos + 1] = Tmp8bs[2];
-                       Files[Id].Buffer[Pos + 2] = Tmp8bs[1];
-                       Files[Id].Buffer[Pos + 3] = Tmp8bs[0];
+                       file.Buffer[Pos] = Tmp8bs[3];
+                       file.Buffer[Pos + 1] = Tmp8bs[2];
+                       file.Buffer[Pos + 2] = Tmp8bs[1];
+                       file.Buffer[Pos + 3] = Tmp8bs[0];
                      }
                      break;
              case BITSF:
                      TmpFloat = _Value;
                      if(_DataMode.Swap) // No PC por padrão os bytes ja são invertidos.
                      {
-                       Files[Id].Buffer[Pos] = Tmp8bs[0];
-                       Files[Id].Buffer[Pos + 1] = Tmp8bs[1];
-                       Files[Id].Buffer[Pos + 2] = Tmp8bs[2];
-                       Files[Id].Buffer[Pos + 3] = Tmp8bs[3];
+                       file.Buffer[Pos] = Tmp8bs[0];
+                       file.Buffer[Pos + 1] = Tmp8bs[1];
+                       file.Buffer[Pos + 2] = Tmp8bs[2];
+                       file.Buffer[Pos + 3] = Tmp8bs[3];
                      }
                      else
                      {
-                       Files[Id].Buffer[Pos] = Tmp8bs[3];
-                       Files[Id].Buffer[Pos + 1] = Tmp8bs[2];
-                       Files[Id].Buffer[Pos + 2] = Tmp8bs[1];
-                       Files[Id].Buffer[Pos + 3] = Tmp8bs[0];
+                       file.Buffer[Pos] = Tmp8bs[3];
+                       file.Buffer[Pos + 1] = Tmp8bs[2];
+                       file.Buffer[Pos + 2] = Tmp8bs[1];
+                       file.Buffer[Pos + 3] = Tmp8bs[0];
                      }
 
        }

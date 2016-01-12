@@ -117,7 +117,7 @@ void FChart3d::Update()
 
     double MaxZ = GetMaxZ();
 
-    setTitle("A Simple SurfacePlot Demonstration");
+    setTitle(DataMap3d->TitleGraf.isEmpty() ? "3D Map" : DataMap3d->TitleGraf);
 
     setRotation(30,0,15);
     setScale(MaxZ / MaxX, MaxZ / MaxY, 1);

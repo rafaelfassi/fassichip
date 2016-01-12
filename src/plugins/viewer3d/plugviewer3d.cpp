@@ -63,6 +63,7 @@ void PlugViewer3d::NewViewer3d(FDataPackage *_DataPackage, QString _Label)
     Viewer3d->SetTabLabel(_Label);
     MainWindow->AddNewTab(Viewer3d);
     MainWindow->RefreshDataTabs();
+    Viewer3d->on_Refresh_Triggered();
 }
 
 //Q_EXPORT_PLUGIN2(plugviewer3d, PlugViewer3d)

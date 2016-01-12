@@ -1,146 +1,148 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE FassiChip_Driver>
 <Driver version="3.0">
-    <Script Name="Simples Diálogo" Group="Diversos">
+    <Script Group="Diversos" Name="Simples Diálogo">
         <UiFileName>teste.ui</UiFileName>
-        <StrScript>var obj = new Object;
-obj.UseDialog = true;
-
-obj.Run = function() {
-	if (!this.initialized)
-	{
-		this.Dialog.pushButton.clicked.connect(this, this.apply);
-		this.initialized = true;
-	}
-	this.Dialog.show();
-    
-};
-
-obj.apply = function() {
-    this.Dialog.label.text = this.Dialog.lineEdit.text;
-};
-
+        <StrScript>var obj = new Object;&#xd;
+obj.UseDialog = true;&#xd;
+&#xd;
+obj.Run = function() {&#xd;
+	if (!this.initialized)&#xd;
+	{&#xd;
+		this.Dialog.pushButton.clicked.connect(this, this.apply);&#xd;
+		this.initialized = true;&#xd;
+	}&#xd;
+	this.Dialog.show();&#xd;
+    &#xd;
+};&#xd;
+&#xd;
+obj.apply = function() {&#xd;
+    this.Dialog.label.text = this.Dialog.lineEdit.text;&#xd;
+};&#xd;
+&#xd;
 obj;</StrScript>
     </Script>
-    <Script Name="Vários" Group="Diversos">
+    <Script Group="Diversos" Name="Vários">
         <UiFileName>teste2.ui</UiFileName>
-        <StrScript>var obj = new Object;
-obj.UseDialog = true;
-
-obj.Run = function() 
-{
-	if (!this.initialized)
-	{
-		this.Dialog.GroupIgn.BtnMapIgn2d.clicked.connect(this, this.Ign2d);
-		this.Dialog.GroupIgn.BtnMapIgn3d.clicked.connect(this, this.Ign3d);
-                this.Dialog.GroupInj.BtnMapInj2d.clicked.connect(this, this.Inj2d);
-                this.Dialog.GroupInj.BtnMapInj3d.clicked.connect(this, this.Inj3d);
-                this.Dialog.BtnCalcChkSum.clicked.connect(this, this.ChkSum);
-		this.initialized = true;
-	}
-	this.Dialog.show();
-    
-};
-
-obj.Ign2d = function() 
-{
-    	var View2d = new DataObj;
-	View2d.StartAddress = 0xAE0;
-	View2d.EndAddress = 0xB7F;
-	View2d.SelectionX = 16;
-	View2d.SelectionY = 10;
-	Plugin.Exec("GraphicEditor.Show:Mapa de Avanço", View2d);
-};
-
-obj.Ign3d = function() 
-{
-    	var Map3d = new DataObj;
-	var SizeX = 16;
-	var SizeY = 10;
-	var Ini = 0xAE0;
-	var OffsetX = 1; //8 Bits OffsetX = 1; 16Bits OffsetX = 2; 32Bits OffsetX = 4;
-
-	SizeX = SizeX/OffsetX;
-
-	Map3d.Data3D.SetSize(SizeX, SizeY);
-
-	for(x=0; x&lt;SizeX; x++)
-	{
-	   for(y=0; y&lt;SizeY; y++) Map3d.Data3D.SetAddressZ(x, y, Ini + x*OffsetX + y*SizeX*OffsetX);
-	}
-
-	Map3d.Data3D.CreateDefaultScale();
-	Plugin.Exec("Viewer3d.Show:Mapa de Avanço 3D", Map3d);
-	};
-
-obj.Inj2d = function() 
-{
-    	var View2d = new DataObj;
-	View2d.StartAddress = 0x840;
-	View2d.EndAddress = 0x93F;
-	View2d.SelectionX = 16;
-	View2d.SelectionY = 16;
-	Plugin.Exec("GraphicEditor.Show:Mapa de Injeção", View2d);
-};
-
-obj.Inj3d = function() 
-{
-    	var Map3d = new DataObj;
-	var SizeX = 16;
-	var SizeY = 16;
-	var Ini = 0x840;
-	var OffsetX = 1; //8 Bits OffsetX = 1; 16Bits OffsetX = 2; 32Bits OffsetX = 4;
-
-	SizeX = SizeX/OffsetX;
-
-	Map3d.Data3D.SetSize(SizeX, SizeY);
-
-	for(x=0; x&lt;SizeX; x++)
-	{
-	   for(y=0; y&lt;SizeY; y++) Map3d.Data3D.SetAddressZ(x, y, Ini + x*OffsetX + y*SizeX*OffsetX);
-	}
-
-	Map3d.Data3D.CreateDefaultScale();
-	Plugin.Exec("Viewer3d.Show:Mapa de Injeção 3D", Map3d);
-};
-    
-obj.ChkSum = function() 
-{
-    	var sum16; 
-        sum16 = 0;
-
-        Data.FileType = 0;
-        Data.ModeBits = "8Bits";
-        Data.Signal = false;
-        Data.Swap = false;
-
-        for(var x = 0x10; x &lt;= 0x35FF; x++){ sum16 += Data.ReadValue(x); }
-
-        for(var x = 0x3800; x &lt;= 0x5FFF; x++) { sum16 += Data.ReadValue(x); }
-
-        for(var x = 0x6000; x &lt;= 0x7FFF; x++) { sum16 += Data.ReadValue(x); }
-
-        Data.ModeBits = "16Bits";
-
-        sum16 += Data.ReadValue(0x14FE);
-
-        MsgBox.text = Data.To16Bits(sum16);
-        MsgBox.exec();
-        this.Dialog.LabChkSum.text = Data.To16Bits(sum16);
-};
-
+        <StrScript>var obj = new Object;&#xd;
+obj.UseDialog = true;&#xd;
+&#xd;
+obj.Run = function() &#xd;
+{&#xd;
+	if (!this.initialized)&#xd;
+	{&#xd;
+		this.Dialog.GroupIgn.BtnMapIgn2d.clicked.connect(this, this.Ign2d);&#xd;
+		this.Dialog.GroupIgn.BtnMapIgn3d.clicked.connect(this, this.Ign3d);&#xd;
+                this.Dialog.GroupInj.BtnMapInj2d.clicked.connect(this, this.Inj2d);&#xd;
+                this.Dialog.GroupInj.BtnMapInj3d.clicked.connect(this, this.Inj3d);&#xd;
+                this.Dialog.BtnCalcChkSum.clicked.connect(this, this.ChkSum);&#xd;
+		this.initialized = true;&#xd;
+	}&#xd;
+	this.Dialog.show();&#xd;
+    &#xd;
+};&#xd;
+&#xd;
+obj.Ign2d = function() &#xd;
+{&#xd;
+    	var View2d = new DataObj;&#xd;
+	View2d.StartAddress = 0xAE0;&#xd;
+	View2d.EndAddress = 0xB7F;&#xd;
+	View2d.SelectionX = 16;&#xd;
+	View2d.SelectionY = 10;&#xd;
+	Plugin.Exec("GraphicEditor.Show:Mapa de Avanço", View2d);&#xd;
+};&#xd;
+&#xd;
+obj.Ign3d = function() &#xd;
+{&#xd;
+    	var Map3d = new DataObj;&#xd;
+	var SizeX = 16;&#xd;
+	var SizeY = 10;&#xd;
+	var Ini = 0xAE0;&#xd;
+	var OffsetX = 1; //8 Bits OffsetX = 1; 16Bits OffsetX = 2; 32Bits OffsetX = 4;&#xd;
+&#xd;
+         Map3d.Data3D.SetTitleGraf("Mapa de Avanço IAWP8");&#xd;
+        &#xd;
+	SizeX = SizeX/OffsetX;&#xd;
+&#xd;
+	Map3d.Data3D.SetSize(SizeX, SizeY);&#xd;
+&#xd;
+	for(x=0; x&lt;SizeX; x++)&#xd;
+	{&#xd;
+	   for(y=0; y&lt;SizeY; y++) Map3d.Data3D.SetAddressZ(x, y, Ini + x*OffsetX + y*SizeX*OffsetX);&#xd;
+	}&#xd;
+&#xd;
+	Map3d.Data3D.CreateDefaultScale();&#xd;
+	Plugin.Exec("Viewer3d.Show:Mapa de Avanço 3D", Map3d);&#xd;
+	};&#xd;
+&#xd;
+obj.Inj2d = function() &#xd;
+{&#xd;
+    	var View2d = new DataObj;&#xd;
+	View2d.StartAddress = 0x840;&#xd;
+	View2d.EndAddress = 0x93F;&#xd;
+	View2d.SelectionX = 16;&#xd;
+	View2d.SelectionY = 16;&#xd;
+	Plugin.Exec("GraphicEditor.Show:Mapa de Injeção", View2d);&#xd;
+};&#xd;
+&#xd;
+obj.Inj3d = function() &#xd;
+{&#xd;
+    	var Map3d = new DataObj;&#xd;
+	var SizeX = 16;&#xd;
+	var SizeY = 16;&#xd;
+	var Ini = 0x840;&#xd;
+	var OffsetX = 1; //8 Bits OffsetX = 1; 16Bits OffsetX = 2; 32Bits OffsetX = 4;&#xd;
+&#xd;
+	SizeX = SizeX/OffsetX;&#xd;
+&#xd;
+	Map3d.Data3D.SetSize(SizeX, SizeY);&#xd;
+&#xd;
+	for(x=0; x&lt;SizeX; x++)&#xd;
+	{&#xd;
+	   for(y=0; y&lt;SizeY; y++) Map3d.Data3D.SetAddressZ(x, y, Ini + x*OffsetX + y*SizeX*OffsetX);&#xd;
+	}&#xd;
+&#xd;
+	Map3d.Data3D.CreateDefaultScale();&#xd;
+	Plugin.Exec("Viewer3d.Show:Mapa de Injeção 3D", Map3d);&#xd;
+};&#xd;
+    &#xd;
+obj.ChkSum = function() &#xd;
+{&#xd;
+    	var sum16; &#xd;
+        sum16 = 0;&#xd;
+&#xd;
+        Data.FileType = 0;&#xd;
+        Data.ModeBits = "8Bits";&#xd;
+        Data.Signal = false;&#xd;
+        Data.Swap = false;&#xd;
+&#xd;
+        for(var x = 0x10; x &lt;= 0x35FF; x++){ sum16 += Data.ReadValue(x); }&#xd;
+&#xd;
+        for(var x = 0x3800; x &lt;= 0x5FFF; x++) { sum16 += Data.ReadValue(x); }&#xd;
+&#xd;
+        for(var x = 0x6000; x &lt;= 0x7FFF; x++) { sum16 += Data.ReadValue(x); }&#xd;
+&#xd;
+        Data.ModeBits = "16Bits";&#xd;
+&#xd;
+        sum16 += Data.ReadValue(0x14FE);&#xd;
+&#xd;
+        MsgBox.text = Data.To16Bits(sum16);&#xd;
+        MsgBox.exec();&#xd;
+        this.Dialog.LabChkSum.text = Data.To16Bits(sum16);&#xd;
+};&#xd;
+&#xd;
 obj;</StrScript>
     </Script>
     <Groups>
         <Item>Diversos</Item>
     </Groups>
-    <Script Name="Sem Diálogo" Group="Diversos">
-        <UiFileName></UiFileName>
-        <StrScript>var View2d = new DataObj;
-View2d.StartAddress = 0xAE0;
-View2d.EndAddress = 0xB7F;
-View2d.SelectionX = 16;
-View2d.SelectionY = 10;
+    <Script Group="Diversos" Name="Sem Diálogo">
+        <UiFileName/>
+        <StrScript>var View2d = new DataObj;&#xd;
+View2d.StartAddress = 0xAE0;&#xd;
+View2d.EndAddress = 0xB7F;&#xd;
+View2d.SelectionX = 16;&#xd;
+View2d.SelectionY = 10;&#xd;
 Plugin.Exec("GraphicEditor.Show:Mapa de Avanço", View2d);</StrScript>
     </Script>
 </Driver>
